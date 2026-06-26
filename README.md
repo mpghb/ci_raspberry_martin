@@ -1,6 +1,6 @@
 # CI Raspberry Martin
 
-**Martin Feuerstein**
+**Martin**
 
 Dieses Repository demonstriert eine vollständige CI-Pipeline für ein gemischtes C/Python-Projekt,
 das einen typischen Embedded-Workflow (Raspberry Pi) nachbildet.
