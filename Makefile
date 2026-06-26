@@ -14,7 +14,7 @@ test:
 	cd python && pytest tests/ -v
 
 check:
-	cppcheck --enable=all --error-exitcode=1 --suppress=missingIncludeSystem c/src/ c/include/
+	cppcheck --enable=all --error-exitcode=1 --suppress=unusedFunction -I c/include/ c/src/ c/include/
 	cd python && ruff check src/
 
 clean:
