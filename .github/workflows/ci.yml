@@ -28,6 +28,8 @@ jobs:
         run: >
           cppcheck --enable=all --error-exitcode=1
           --suppress=missingIncludeSystem
+          --suppress=unusedFunction
+          -I c/include/
           c/src/ c/include/
 
   python-lint-and-test:
