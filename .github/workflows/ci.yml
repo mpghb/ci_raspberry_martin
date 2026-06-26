@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  c-build-and-test:
+    name: C – Build, Test, Static Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install tools
+        run: sudo apt-get install -y cmake cppcheck
+
+      - name: Build
+        run: |
+          cmake -S c -B c/build
+          cmake --build c/build
+
+      - name: Test
+        run: cd c/build && ctest --output-on-failure
+
+      - name: Static Analysis (cppcheck)
+        run: >
+          cppcheck --enable=all --error-exitcode=1
+          --suppress=missingIncludeSystem
+          c/src/ c/include/
+
+  python-lint-and-test:
+    name: Python – Lint, Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r python/requirements.txt -e python/
+
+      - name: Lint (ruff)
+        run: cd python && ruff check src/
+
+      - name: Test (pytest)
+        run: cd python && pytest tests/ -v
